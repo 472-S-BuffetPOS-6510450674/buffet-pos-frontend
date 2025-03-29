@@ -71,6 +71,24 @@ const useCancelInvoice = () => {
     });
 }
 
+const updateLeftoverFood = async ({ invoice_id, total_food_weight }: { invoice_id: string; total_food_weight: number }) => {
+    const session = await getSession();
+    const { data } : { data: any } = await axiosInstance.put("/manage/invoices/charge-food-overweight", {
+        invoice_id,
+        total_food_weight
+    }, {
+        headers: {
+            Authorization: `Bearer ${session?.token}`,
+        },
+    });
+    return data
+};
+
+const useUpdateLeftoverFood = () => {
+    return useMutation({
+        mutationFn: updateLeftoverFood,
+    });
+}
 
 
-export { useUpdateInvoice, useGetAllPaidInvoices, useGetAllUnpaidInvoices ,useCancelInvoice}
+export { useUpdateInvoice, useGetAllPaidInvoices, useGetAllUnpaidInvoices ,useCancelInvoice, useUpdateLeftoverFood}

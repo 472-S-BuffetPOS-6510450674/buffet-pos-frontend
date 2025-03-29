@@ -8,6 +8,7 @@ import { BsFillCreditCardFill } from "react-icons/bs";
 import { FaHistory } from "react-icons/fa";
 import { LuSettings } from "react-icons/lu";
 import { RxExit } from "react-icons/rx";
+import { MdPerson} from "react-icons/md"
 import { useRouter } from 'next/navigation';
 import { signOut } from 'next-auth/react';
 
@@ -18,6 +19,7 @@ const menuItems = [
     { icon: <BsFillCreditCardFill />, label: 'ชำระเงิน', route: '/manager/all-payment' },
     { icon: <FaHistory />, label: 'ประวัติออเดอร์', route: '/manager/history' },
     { icon: <LuSettings />, label: 'ตั้งค่าร้าน', route: '/manager/setting' },
+    { icon: <MdPerson/>, label: 'สมาชิก', route: '/manager/member'},
     { icon: <RxExit />, label: 'ออกจากระบบ', action: signOut }
 ];
 
