@@ -1,3 +1,5 @@
+'use client';
+
 import { useGetCategories } from "@/api/manager/useCategory";
 import {
   Dialog,
