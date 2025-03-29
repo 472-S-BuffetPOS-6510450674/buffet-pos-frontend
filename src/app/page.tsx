@@ -1,4 +1,5 @@
-// Page.js
+'use client';
+
 import React from 'react';
 import Setting from '@/app/manager/setting/page';
 import Navbar from '@/components/Navbar';

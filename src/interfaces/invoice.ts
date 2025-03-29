@@ -6,6 +6,7 @@ export interface BaseInvoiceResponse {
   tableId?: string | null;
   createdAt: Date;
   updatedAt: Date;
+  price_fee_food_overweight: number;
 }
 
 export interface InvoiceDetail extends BaseInvoiceResponse {}

@@ -1,12 +1,13 @@
 'use client';
 
-import { useDeleteCategory } from "@/api/manager/useCategory";
-import { useAddMenu, useGetMenus } from "@/api/manager/useMenu";
+import { useGetBestMenuSellers } from "@/api/general/useBestSeller";
+import { useGetMenus } from "@/api/manager/useMenu";
 import AddCategoryDialog from "@/components/manager/addCategoryDialog";
 import { AddMenuDialog } from "@/components/manager/addMenuDialog";
 import DeleteCategoryDialog from "@/components/manager/DeleteCategoryDialog";
 import LoadingAnimation from "@/components/manager/loadingAnimation";
 import MenuCard from "@/components/manager/menuCard";
+import MenuPopularCard from "@/components/manager/menuPopularCard";
 import { BaseMenuResponse } from "@/interfaces/menu";
 import { useState } from "react";
 
@@ -16,8 +17,13 @@ export default function MenuPage() {
     const [openDeleteCategoryDialog, setDeleteCategoryDialog] = useState(false);
     const [searchTerm, setSearchTerm] = useState("");
     const { data: menus = [], isLoading: loadingMenus, refetch: refetchMenus } = useGetMenus();
+    const { data: bestMenu = [], isLoading: loadingBestMenus, refetch: refetchBestMenus} = useGetBestMenuSellers();
 
     if (loadingMenus) {
+        return <LoadingAnimation />;
+    }
+
+    if (loadingBestMenus) {
         return <LoadingAnimation />;
     }
 
@@ -34,7 +40,11 @@ export default function MenuPage() {
     };
 
     // Filter menus based on the search term
-    const filteredMenus = menus.filter((menu) =>
+    const filteredMenus = menus.filter((menu: BaseMenuResponse) =>
+        menu.name && menu.name.toLowerCase().includes(searchTerm.toLowerCase())
+    );
+
+    const filteredBestMenus = bestMenu.filter((menu: BaseMenuResponse) =>
         menu.name && menu.name.toLowerCase().includes(searchTerm.toLowerCase())
     );
 
@@ -74,6 +84,24 @@ export default function MenuPage() {
                     </div>
                 </div>
             </div>
+
+            <div className="text-3xl font-bold">
+                เมนูขายดี
+            </div>
+
+            <div className="grid grid-cols-3 gap-10">
+
+                {Array.isArray(filteredBestMenus) && filteredBestMenus.length > 0 ? (
+                    filteredBestMenus.slice(0, 3).map((menu: BaseMenuResponse, index: number) => (
+                        <MenuPopularCard key={menu.id} menu={menu} refetchMenus={refetchMenus} rank={index+1} />
+                    ))
+                ) : (
+                    <p>No menus available</p>
+                )}
+            </div>
+
+            <hr />
+
             <div className="grid grid-cols-3 gap-10">
                 {Array.isArray(filteredMenus) && filteredMenus.length > 0 ? (
                     filteredMenus.map((menu: BaseMenuResponse) => (

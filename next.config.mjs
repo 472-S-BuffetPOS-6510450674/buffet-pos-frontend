@@ -6,7 +6,6 @@ const nextConfig = {
         protocol: "https",
         hostname: "res.cloudinary.com",
         port: "",
-        pathname: "/dgjrzjo6y/image/upload/**",
       },
     ],
   },
@@ -17,6 +16,8 @@ const nextConfig = {
     ignoreBuildErrors: true,
   },
   output: "standalone",
+  trailingSlash: false,
+  reactStrictMode: true,
 };
 
 export default nextConfig;

@@ -9,6 +9,7 @@ import { BaseTableResponse } from "@/interfaces/table";
 import { useEffect, useState } from "react";
 import { useAssignTable } from "@/api/manager/useTable";
 import {QRCodeSVG} from 'qrcode.react';
+import { useRouter } from "next/navigation";
 
 interface ConfirmTableDialogProps {
   openDialog: boolean;
@@ -28,6 +29,7 @@ export function ConfirmTableDialog({
   const [peopleAmount, setPeopleAmount] = useState<number>(0);
   const [resData, setResData] = useState<BaseTableResponse>();
   const assignTable = useAssignTable();
+  const router = useRouter();
 
   useEffect(() => {
     if (!selectedTable) {
@@ -125,6 +127,14 @@ export function ConfirmTableDialog({
             กรุณาแสกน QR-Code เพื่อสั่งอาหาร
           </div>
         </div>
+        <DialogFooter className="">
+          <div
+            className="btn btn-success text-whereWhite w-full"
+            onClick={() => router.push(resData.qrcode!)}
+          >
+            กดที่นี่เพื่อไปสั่งอาหาร
+          </div>
+        </DialogFooter>
         <DialogFooter className="">
           <div
             className="btn btn-error text-whereWhite w-full"

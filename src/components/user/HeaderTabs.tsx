@@ -13,7 +13,7 @@ const observeSections = (sections: string[], setSelected: (id: string) => void) 
                 }
             });
         },
-        { threshold: 0.6 } 
+        { threshold: 0.6 }
     );
 
     sections.forEach(sectionId => {
@@ -97,6 +97,19 @@ export default function HeaderTabs({ categories, search, setSearch }: { categori
 
 
                     <div className="flex flex-row w-full items-center whitespace-nowrap gap-6 pl-5">
+
+                        <div
+                            className={`relative border-transparent pb-1 ${selected === "Best Sellers" ? 'border-b-0' : ''}`}
+                            onClick={() => handleClickTab("ขายดี")}
+                        >
+                            <p className={selected === "ขายดี" ? "text-whereOrange" : "text-whereBlack"}>
+                                ขายดี
+                            </p>
+                            {selected === "ขายดี" && (
+                                <span className="absolute left-1/2 transform -translate-x-1/2 bottom-0 w-1 h-1 bg-whereOrange rounded-full"></span>
+                                
+                            )}
+                        </div>
                         {categories!.map((category: string) => (
                             <div
                                 className={`relative border-transparent pb-1 ${selected === category ? 'border-b-0' : null}`}
@@ -119,16 +132,23 @@ export default function HeaderTabs({ categories, search, setSearch }: { categori
                     <p className="text-lg font-bold">เลือกหมวดหมู่</p>
                     <Icon icon="ic:round-close" fontSize={30} color='#ff8d13ef' onClick={() => setIsShow(false)} />
                 </div>
+
+                <div
+                    className={`flex flex-row justify-start gap-2 py-4 px-7 border-b-[1px] ${selected === "Best Sellers" ? 'text-primary' : 'text-whereBlack'}`}
+                    onClick={() => handleClickTab("ขายดี")}>
+                    <p className="text-xl">ขายดี</p>
+                </div>
+
                 {categories!.map((category, index) => (
                     <div
                         key={index}
-                        className={`flex flex-row justify-start gap-2 py-4 px-7 border-b-[1px] ${category === selected ? 'text-primary' : 'text-whereBlack'} } `}
+                        className={`flex flex-row justify-start gap-2 py-4 px-7 border-b-[1px] ${category === selected ? 'text-primary' : 'text-whereBlack'}`}
                         onClick={() => handleClickTab(category)}>
                         <p className="text-xl">{category}</p>
                     </div>
-
                 ))}
             </div>
+
             {isShow && <div className="fixed inset-0 bg-black opacity-50 z-50" onClick={() => setIsShow(false)}></div>}
         </>
     );
