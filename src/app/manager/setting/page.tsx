@@ -14,19 +14,29 @@ import {
     DialogTrigger,
 } from "@/components/ui/dialog"
 import ModifyPriceDialog from "@/components/manager/ModifyPriceDialog";
+import ModifyPriceGramDialog from "@/components/manager/ModifyPriceGramDialog";
+
 import { useAddTable, useGetTables } from "@/api/manager/useTable";
 import { useForm } from "react-hook-form";
 import LoadingAnimation from "@/components/manager/loadingAnimation";
 import { useRouter } from "next/navigation";
+
 import { useGetPricePerPerson } from "@/api/manager/useSetting";
+import { useGetPricePerGram } from "@/api/manager/useSettingGram";
+
 
 const page = () => {
     const [openModifyPriceDialog, setOpenModifyPriceDialog] = useState(false);
     const [netPricePerPerson, setNetPricePerPerson] = useState(250);
+
+    const [ openModifyPriceGramDialog, setOpenModifyPriceGramDialog ] = useState(false);
+    const [ finePricePerGram, setFinePricePerGram ] = useState(100);
+
     const [ openCreateTableDialog, setOpenCreateTableDialog ] = useState(false);
- 
+
     const { data: tables, isLoading: loadingTables, refetch: refetchTables } = useGetTables();
     const { data: pricePerPerson, isLoading: loadingPricePerPerson, refetch: refetchPricePerPerson } = useGetPricePerPerson();
+    const { data: pricePerGram, isLoading: loadingPricePerGram, refetch: refetchPricePerGram} = useGetPricePerGram();
 
     const addTable = useAddTable();
     const router = useRouter();
@@ -38,7 +48,7 @@ const page = () => {
         formState: { errors },
       } = useForm();
 
-    if (loadingTables || loadingPricePerPerson) {
+    if (loadingTables || loadingPricePerPerson || loadingPricePerGram) {
         return <LoadingAnimation/>;
     }
 
@@ -112,6 +122,23 @@ const page = () => {
                     refetchPricePerPerson={refetchPricePerPerson}
                 />
             </div>
+
+            <div className="mt-16">
+                <p className="text-3xl">
+                    ค่าปรับอาหารเหลือ : {Number(pricePerGram?.value).toFixed(2)} บาท/กรัม
+                </p>
+                <button className="btn bg-primary text-white text-lg font-base mt-5" onClick={() => setOpenModifyPriceGramDialog(true)}>
+                    แก้ไขราคา
+                </button>
+                <ModifyPriceGramDialog 
+                    openDialog={openModifyPriceGramDialog} 
+                    setOpenDialog={setOpenModifyPriceGramDialog} 
+                    price={finePricePerGram} 
+                    onSave={(newPrice) => setFinePricePerGram(newPrice)}
+                    refetchPricePerGram={refetchPricePerGram}
+                />
+            </div>
+
             <div className="mt-16">
                 <p className="text-3xl">
                     Employee Whitelist
